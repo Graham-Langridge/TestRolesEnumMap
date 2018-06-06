@@ -29,7 +29,7 @@ namespace TestRolesEnumMap
 				.Cast<EnumAllUsers>()
 				.Select(r => Enum.GetName(r.GetType(), r));
 
-			Console.WriteLine(something);
+			Console.WriteLine(string.Join(", ", something));
 
 			//OR CTRL+F5 ;-)
 			Console.ReadLine();
