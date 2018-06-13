@@ -15,6 +15,24 @@ namespace TestRolesEnumMap
 			MaterialTeamUserGroup
 		}
 
+		public enum EnumSomeUsers
+		{
+			AdminGroup,
+			CostingsTeamManagerGroup
+		}
+
+		public enum EnumSomeOtherUsers
+		{
+			AdminGroup,
+			MaterialTeamUserGroup
+		}
+
+		public enum EnumSomeMoreUsers
+		{
+			CostingsTeamUserGroup,
+			ReadOnlyUserGroup,
+		}
+
 		public static class AccessPermissions
 		{
 			public const string AdminGroup = @"roleNameAdmin";
@@ -27,25 +45,49 @@ namespace TestRolesEnumMap
 		static void Main()
 		{
 			//var something = ListOfRoleNames2();
-
+			Console.WriteLine(string.Join(", ", ListOfUserGroups()));
 			Console.WriteLine(string.Join(", ", ListOfRoleNames()));
-			Console.WriteLine(string.Join(", ", ListOfRoleNames2()));
+			Console.WriteLine(string.Join(", ", ListOfSomeUsersRoleNames(typeof(EnumSomeUsers))));
+			Console.WriteLine(string.Join(", ", ListOfSomeUsersRoleNames(typeof(EnumSomeOtherUsers))));
+			Console.WriteLine(string.Join(", ", ListOfSomeUsersRoleNames(typeof(EnumSomeMoreUsers))));
 
 			//OR CTRL+F5 ;-)
 			Console.ReadLine();
 		}
 
-		private static IEnumerable<string> ListOfRoleNames()
+		private static IEnumerable<string> ListOfUserGroups()
 		{
 			return Enum.GetValues(typeof(EnumAllUsers))
 				.Cast<EnumAllUsers>()
 				.Select(r => Enum.GetName(r.GetType(), r));
 		}
 
-		private static IEnumerable<string> ListOfRoleNames2()
+		private static IEnumerable<string> ListOfRoleNames()
 		{
+			return Enum.GetValues(typeof(EnumAllUsers))
+				.Cast<EnumAllUsers>()
+				.Select(ToFriendlyString).ToList();
+		}
+
+		private static IEnumerable<string> ListOfSomeUsersRoleNames(Type userGroup)
+		{
+			var userGroupNames = Enum.GetNames(userGroup);
+
+			//As a ForEach
+			//foreach (EnumAllUsers enumAllUser in Enum.GetValues(typeof(EnumAllUsers)))
+			//{
+			//	var bob = enumAllUser.ToString();
+			//	if (userGroupNames.Contains(bob))
+			//	{
+			//		foo.Add(ToFriendlyString(enumAllUser));
+			//	}
+
+			//}
+
 			return (from EnumAllUsers enumAllUser
 					in Enum.GetValues(typeof(EnumAllUsers))
+					let bob = enumAllUser.ToString()
+					where userGroupNames.Contains(bob)
 					select ToFriendlyString(enumAllUser)).ToList();
 		}
 
