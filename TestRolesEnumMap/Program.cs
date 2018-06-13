@@ -71,23 +71,9 @@ namespace TestRolesEnumMap
 
 		private static IEnumerable<string> ListOfSomeUsersRoleNames(Type userGroup)
 		{
-			var userGroupNames = Enum.GetNames(userGroup);
-
-			//As a ForEach
-			//foreach (EnumAllUsers enumAllUser in Enum.GetValues(typeof(EnumAllUsers)))
-			//{
-			//	var bob = enumAllUser.ToString();
-			//	if (userGroupNames.Contains(bob))
-			//	{
-			//		foo.Add(ToFriendlyString(enumAllUser));
-			//	}
-
-			//}
-
 			return (from EnumAllUsers enumAllUser
 					in Enum.GetValues(typeof(EnumAllUsers))
-					let bob = enumAllUser.ToString()
-					where userGroupNames.Contains(bob)
+					where Enum.GetNames(userGroup).Contains(enumAllUser.ToString())
 					select ToFriendlyString(enumAllUser)).ToList();
 		}
 
